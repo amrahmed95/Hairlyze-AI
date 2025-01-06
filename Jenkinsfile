@@ -80,7 +80,7 @@ pipeline {
                         dir('backend') {
                             script {
                                 // // Build backend (if applicable)
-                                // sh "${NODEJS_HOME}/bin/npm run build" // Uncomment if you have a build step
+                                sh "${NODEJS_HOME}/bin/node index.js" // Uncomment if you have a build step
                             }
                         }
                     }
