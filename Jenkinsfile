@@ -79,10 +79,34 @@ pipeline {
                     steps {
                         dir('backend') {
                             script {
-                                // // Build backend (if applicable)
-                                sh "${NODEJS_HOME}/bin/node index.js" // Uncomment if you have a build step
+                                // Build backend (if applicable)
+                                // sh "${NODEJS_HOME}/bin/npm run build" // Uncomment if you have a build step
                             }
                         }
+                    }
+                }
+            }
+        }
+
+        stage('Run Backend Server') {
+            steps {
+                dir('backend') {
+                    script {
+                        // Run the backend server
+                        // This will run the server in the background
+                        sh "${NODEJS_HOME}/bin/npm start &"
+                    }
+                }
+            }
+        }
+
+        stage('Run Frontend Development Server') {
+            steps {
+                dir('frontend') {
+                    script {
+                        // Run the frontend development server
+                        // This will run the server in the background
+                        sh "${NODEJS_HOME}/bin/npm run dev &"
                     }
                 }
             }
@@ -101,11 +125,13 @@ pipeline {
 
     post {
         always {
-            // Clean up workspace
-            cleanWs()
+            script {
+                // Clean up workspace
+                cleanWs()
+            }
         }
         success {
-            echo 'Pipeline completed successfully!'
+            echo 'Pipeline completed successfully !'
         }
         failure {
             echo 'Pipeline failed!'
